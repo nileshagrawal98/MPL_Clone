@@ -20,7 +20,7 @@
         <div id="top_info_bar">
             <div class="container">
                 <ul>
-                    <li>Sunday, October 31, 2021</li>
+                    <li id="todays_date">Sunday, October 31, 2021</li>
                     <li>Sign in / Join</li>
                     <li class="res-hide">Disclaimer</li>
                     <li class="res-hide">Privacy</li>
@@ -280,11 +280,11 @@
             </div>
             <div id="mobile_search_modal">
                 <span id="mobile_search_close">
-                    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="28" height="28"
-                            viewBox="0 0 24 24" style=" fill:#ffffff;">
-                            <path
-                                d="M 4.7070312 3.2929688 L 3.2929688 4.7070312 L 10.585938 12 L 3.2929688 19.292969 L 4.7070312 20.707031 L 12 13.414062 L 19.292969 20.707031 L 20.707031 19.292969 L 13.414062 12 L 20.707031 4.7070312 L 19.292969 3.2929688 L 12 10.585938 L 4.7070312 3.2929688 z">
-                            </path>
+                    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="28" height="28" viewBox="0 0 24 24"
+                        style=" fill:#ffffff;">
+                        <path
+                            d="M 4.7070312 3.2929688 L 3.2929688 4.7070312 L 10.585938 12 L 3.2929688 19.292969 L 4.7070312 20.707031 L 12 13.414062 L 19.292969 20.707031 L 20.707031 19.292969 L 13.414062 12 L 20.707031 4.7070312 L 19.292969 3.2929688 L 12 10.585938 L 4.7070312 3.2929688 z">
+                        </path>
                     </svg>
                 </span>
                 <div>Search</div>
@@ -432,6 +432,19 @@
     </div>
 
     <script>
+
+        function setDate() {
+            let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+            let date = new Date();
+
+            let currentDate = days[date.getDay()] + ", " + months[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear();
+
+            document.getElementById("todays_date").textContent = currentDate;
+        }
+
+        setDate();
 
         // Nav script starts
         let search_ico = document.querySelector("#nav_blog > div > div:nth-of-type(3) > svg");
@@ -826,6 +839,9 @@
 
             container.append(content);
         }
+
+
+
 
     </script>
 
