@@ -134,13 +134,17 @@
                         </path>
                     </svg>
                     <div id="search_box">
-                        <input type="text" id="search_input">
-                        <button>Search
-                            <svg x="0" y="0" width="10px" height="10px" viewBox="0 0 24 24" style="fill: transparent;">
-                                <path d="M 4 8 L 12 14 L 20 8" stroke="black" stroke-width="2px"
-                                    transform="rotate(270 12 12)"></path>
-                            </svg>
-                        </button>
+                        <div>
+                            <input type="text" id="search_input">
+                            <button>Search
+                                <svg x="0" y="0" width="10px" height="10px" viewBox="0 0 24 24"
+                                    style="fill: transparent;">
+                                    <path d="M 4 8 L 12 14 L 20 8" stroke="black" stroke-width="2px"
+                                        transform="rotate(270 12 12)"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <div id="search_result"></div>
                     </div>
                 </div>
             </div>
@@ -287,8 +291,12 @@
                         </path>
                     </svg>
                 </span>
+
                 <div>Search</div>
                 <input type="text">
+
+
+                <div id="search_modal_result"></div>
             </div>
         </nav>
 
@@ -510,7 +518,7 @@
         function showSearchBox() {
             let search_box = document.getElementById("search_box");
 
-            search_box.style.display = "flex";
+            search_box.style.display = "block";
 
 
             let search_input = document.getElementById("search_input");
@@ -798,16 +806,6 @@
             for (let i = 0; i < 5; i++) {
                 let div = document.createElement("div");
 
-                // let imgDiv = document.createElement("div");
-
-                // let img = document.createElement("img");
-                // img.src = data[i].urlToImage;
-
-                // let news = document.createElement("span");
-                // news.textContent = "Sports";
-
-                // imgDiv.append(img, news);
-
                 let imgDiv = document.createElement("div");
                 imgDiv.style.backgroundImage = `url(${data[i].urlToImage})`;
 
@@ -838,6 +836,85 @@
             }
 
             container.append(content);
+        }
+
+
+        async function getQueryResult(query) {
+            try {
+                let res = await fetch(`https://newsapi.org/v2/everything?q=${query}&sortBy=popularity&apiKey=6e090dfbade046388eb6c0239e50db8b`);
+
+                let data = await res.json();
+
+                return data;
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        getQueryResult("cricket");
+
+        let searchMobileTimeout;
+        function searchDebounce(src, target, items) {
+            clearTimeout(searchMobileTimeout);
+            searchMobileTimeout = setTimeout(() => {
+                showSearchMobResult(src, target, items);
+            }, 500);
+        }
+
+        document.querySelector("#mobile_search_modal > input").addEventListener("input", () => {
+            searchDebounce("#mobile_search_modal > input", "search_modal_result", 4)
+        });
+
+        document.querySelector("#search_input").addEventListener("input", () => {
+            searchDebounce("#search_input", "search_result", 6)
+        });
+
+        async function showSearchMobResult(src, target, items) {
+            let query = document.querySelector(src);
+
+            let container = document.getElementById(target);
+
+            container.innerHTML = "";
+
+            if (query.value.length == 0) {
+                return;
+            }
+
+            let result = await getQueryResult(query.value);
+
+            result = result.articles;
+
+
+
+            if (result.length == 0) {
+                return;
+            }
+
+            for (let i = 0; i < items; i++) {
+                let div = document.createElement("div");
+
+                let imgDiv = document.createElement("div");
+
+                let img = document.createElement("img");
+                img.src = result[i].urlToImage;
+
+                imgDiv.appendChild(img);
+
+                let detailsDiv = document.createElement("div");
+
+                let title = document.createElement("p");
+                title.textContent = result[i].title;
+
+                let date = document.createElement("p");
+                date.textContent = result[i].publishedAt;
+
+                detailsDiv.append(title, date);
+
+                div.append(imgDiv, detailsDiv);
+
+                container.append(div);
+            }
+
         }
 
 

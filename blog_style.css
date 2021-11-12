@@ -200,6 +200,10 @@ body {
     }
 }
 
+#search_box > div:nth-of-type(1){
+    display: flex;
+}
+
 #search_input {
     border: none;
     border-bottom: 1px solid rgb(214, 214, 214);
@@ -207,7 +211,7 @@ body {
     outline: none;
 }
 
-#search_box>button {
+#search_box > div:nth-of-type(1) > button {
     background-color: transparent;
     border: none;
     border-bottom: 1px solid rgb(214, 214, 214);
@@ -216,10 +220,50 @@ body {
     align-items: center;
 }
 
-#search_box>button:hover, #search_box>button:hover>svg>path {
+#search_box> div:nth-of-type(1) > button:hover, #search_box> div:nth-of-type(1) > button:hover>svg>path {
     color: var(--hover-color);
     cursor: pointer;
     stroke: var(--hover-color) !important;
+}
+
+#search_box > div:nth-of-type(2){
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(2, 45%);
+    column-gap: 20px;
+}
+
+#search_box > div:nth-of-type(2) > div{
+    display: flex;
+    align-items: flex-start;
+    cursor: pointer;
+}
+
+#search_box > div:nth-of-type(2) > div img{
+    width: 80px;
+    height: 80px;
+    margin-right: 10px;
+}
+
+#search_box > div:nth-of-type(2) > div > div:nth-of-type(2) > p:nth-of-type(1) {
+    font-size:14px;
+    max-lines: 2;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    margin-top: 0;
+    margin-bottom:4px;
+}
+
+#search_box > div:nth-of-type(2) > div:hover > div:nth-of-type(2) > p:nth-of-type(1) {
+    color: var(--hover-color);
+}
+
+#search_box > div:nth-of-type(2) > div > div:nth-of-type(2) > p:nth-of-type(2) {
+    font-size:11px;
+    margin-top: 0;
+    color: #777;
 }
 
 .nav_scrolled {
@@ -752,6 +796,11 @@ body {
     margin: 2%
 }
 
+.footerC > div:hover > div{
+    cursor: pointer;
+    color: var(--hover-color);
+}
+
 .heading {
     color: white;
     padding: 15px;
@@ -764,8 +813,8 @@ body {
     display: flex;
 }
 .news:hover{
-    color:rgb(16, 112, 236);
-    cursor: pointer
+    color: var(--hover-color);
+    cursor: pointer;
 }
 
 
@@ -820,7 +869,7 @@ body {
 
 #mobile_nav {
     display: none;
-    background-color: #ec3f3f;
+    background-color: #eb002b;
     height: 56px;
     align-items: center;
     justify-content: space-between;
@@ -887,7 +936,7 @@ body {
     z-index: 11;
 }
 
-#mobile_search_modal > div{
+#mobile_search_modal > div:nth-of-type(1){
     width: fit-content;
     margin: 60px auto;
     color: white;
@@ -905,6 +954,39 @@ body {
     outline: none;
     font-weight: 700;
     font-size: 24px;
+}
+
+#search_modal_result {
+    margin-top: 20px;
+    color: white;
+}
+
+#search_modal_result > div{
+    display: flex;
+    align-items: flex-start;
+    font-size: 16px;
+}
+
+#search_modal_result > div > div{
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+#search_modal_result > div > div:nth-of-type(1) > img{
+    width: 100px;
+    height: 80px;
+    margin-right: 10px;
+}
+
+#search_modal_result > div > div:nth-of-type(2) > p:nth-of-type(1) {
+    margin-bottom: 4px;
+    margin-top: 0;
+}
+
+#search_modal_result > div > div:nth-of-type(2) > p:nth-of-type(2) {
+    font-size: 11px;
+    color: rgb(223, 223, 223);
+    margin-top: 4px;
 }
 
 @media (max-width: 1140px) {
@@ -1063,40 +1145,31 @@ body {
     }
 
 }
-@media (max-width: 375px) {
-    .footer{
-        display:grid;
-        height: 100%;
-    }
-    .footerA{
-        width:300px;
-        margin-left:70px;
-        margin-bottom:40px;
-        
-    }
-    .footerB{
-        width:300px;
-        margin-left:80px
-    }.footerC{
-        width:300px;
-        margin-left:80px
-    }
-}
+
 @media (max-width: 768px) {
     .footer{
-        
-        
+        display:flex;
+        height: 100%;
+        flex-direction:column;
     }
-    .footerA{
-        width:270px;
-        margin-left:0px
-        
+    .footerA, .footerB, .footerC{
+        width:100%;
+        height: 100%;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
     }
-    .footerB{
-        width:230px;
-        margin-left:0px
-    }.footerC{
-        width:230px;
-        margin-left:0px
+
+    .footerC{
+        margin-bottom: 34px;
+    }
+
+    .rohit {
+        height: 100%;
+    }
+
+    .rohit img{
+        height: calc(var(--middle-section-right-width)*0.2);
     }
 }
