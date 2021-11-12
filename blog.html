@@ -853,10 +853,10 @@
 
         getQueryResult("cricket");
 
-        let searchMobileTimeout;
+        let searchTimeout;
         function searchDebounce(src, target, items) {
-            clearTimeout(searchMobileTimeout);
-            searchMobileTimeout = setTimeout(() => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
                 showSearchMobResult(src, target, items);
             }, 500);
         }
