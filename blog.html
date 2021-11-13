@@ -21,7 +21,10 @@
             <div class="container">
                 <ul>
                     <li id="todays_date">Sunday, October 31, 2021</li>
-                    <li>Sign in / Join</li>
+                    <li id="login_option"><span id="login_btn">Sign in</span> / <span id="join_btn">Join</span></li>
+                    <li id="nav_user">
+                        <span id="logged_username"></span>
+                    </li>
                     <li class="res-hide">Disclaimer</li>
                     <li class="res-hide">Privacy</li>
                     <li class="res-hide">Advertisement</li>
@@ -333,6 +336,58 @@
 
 
         <span id="goto_top_btn"><img src="./images/up-arrow.png" width="20px"></span>
+
+        <!-- Signing -->
+        <div id="overlay">
+            <div id="overlay_background"></div>
+            <div id="overlay_signup" class="overlay-content">
+                <span id="signup_overlay_close_btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="28" height="28"
+                        viewBox="0 0 24 24" style=" fill:#ffffff;">
+                        <path
+                            d="M 4.7070312 3.2929688 L 3.2929688 4.7070312 L 10.585938 12 L 3.2929688 19.292969 L 4.7070312 20.707031 L 12 13.414062 L 19.292969 20.707031 L 20.707031 19.292969 L 13.414062 12 L 20.707031 4.7070312 L 19.292969 3.2929688 L 12 10.585938 L 4.7070312 3.2929688 z">
+                        </path>
+                    </svg>
+                </span>
+                <h2>Sign Up</h2>
+                <div class="alert-success" id="signup_success">
+                    <p>SignUp Successful</p>
+                </div>
+                <div class="alert-failed" id="signup_failed">
+                    <p>SignUp Failed, User Already Exists</p>
+                </div>
+                <form id="signup_form">
+                    <input type="text" id="signup_name" min="1" placeholder="Name" required>
+                    <input type="mail" id="signup_mail" placeholder="Email" required>
+                    <input type="password" id="signup_pass" min="6" placeholder="Password" required>
+                    <input type="text" id="signup_username" min="1" placeholder="Username" required>
+                    <input type="tel" id="signup_mobile" min="10" placeholder="Mobile Number" required>
+                    <input type="text" id="signup_description" placeholder="Description">
+                    <button type="submit" class="btn">SignUp</button>
+                </form>
+            </div>
+            <div id="overlay_login" class="overlay-content">
+                <span id="login_overlay_close_btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="28" height="28"
+                        viewBox="0 0 24 24" style=" fill:#ffffff;">
+                        <path
+                            d="M 4.7070312 3.2929688 L 3.2929688 4.7070312 L 10.585938 12 L 3.2929688 19.292969 L 4.7070312 20.707031 L 12 13.414062 L 19.292969 20.707031 L 20.707031 19.292969 L 13.414062 12 L 20.707031 4.7070312 L 19.292969 3.2929688 L 12 10.585938 L 4.7070312 3.2929688 z">
+                        </path>
+                    </svg>
+                </span>
+                <h2>SIGN IN</h2>
+                <h3>Welcome! Log into your account</h3>
+                <div class="alert-failed" id="login_failed">
+                    <p>Login Failed, Invalid login creadentials</p>
+                </div>
+                <form id="login_form">
+                    <input type="text" id="login_username" min="1" placeholder="Your Username" required>
+                    <input type="password" id="login_pass" placeholder="Your Password" required>
+                    <button type="submit" class="btn">Login</button>
+                </form>
+            </div>
+        </div>
+
 
         <!-- Footer -->
 
@@ -918,6 +973,166 @@
         }
 
 
+
+        // Signing
+
+        document.getElementById("login_btn").addEventListener("click", () => { showOverlay('login') });
+        document.getElementById("join_btn").addEventListener("click", () => { showOverlay('signup') });
+        document.getElementById("login_overlay_close_btn").addEventListener("click", closeOverlay);
+        document.getElementById("signup_overlay_close_btn").addEventListener("click", closeOverlay);
+
+
+        function showOverlay(t) {
+            let overlay = document.getElementById("overlay");
+            overlay.style.display = "block";
+            if (t == "signup") {
+                document.getElementById("overlay_signup").style.display = "block";
+                document.getElementById("overlay_login").style.display = "none";
+            } else if (t == "login") {
+                document.getElementById("overlay_signup").style.display = "none";
+                document.getElementById("overlay_login").style.display = "block";
+            }
+            overlay.onscroll
+        }
+
+        function setSignOverlay() {
+            document.getElementById("overlay_background").addEventListener("click", () => { closeOverlay() });
+
+            document.getElementById("signup_form").addEventListener("submit", () => { SignUp(event) });
+
+            document.getElementById("login_form").addEventListener("submit", () => { Login(event) });
+        }
+
+        setSignOverlay();
+
+        async function SignUp(e) {
+            e.preventDefault();
+
+            let form = document.getElementById("signup_form");
+
+            let details = {
+                name: form.signup_name.value,
+                email: form.signup_mail.value,
+                password: form.signup_pass.value,
+                username: form.signup_username.value,
+                mobile: form.signup_mobile.value,
+                description: form.signup_description.value,
+            }
+
+            // console.log(details);
+
+            details = JSON.stringify(details);
+
+            try {
+                let res = await fetch("https://masai-api-mocker.herokuapp.com/auth/register", {
+                    method: "POST",
+                    body: details,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                let data = await res.json();
+
+                if (data.error) {
+                    showSignUpFailed();
+                } else {
+                    showSignUpSuccessful();
+                }
+
+            } catch (e) {
+                // console.log(e);
+            }
+
+        }
+
+        async function Login(e) {
+            e.preventDefault();
+
+            document.getElementById("login_failed").style.display = "none";
+
+            let form = document.getElementById("login_form");
+
+            let details = {
+                password: form.login_pass.value,
+                username: form.login_username.value,
+            }
+
+            console.log(details);
+
+            details = JSON.stringify(details);
+
+            try {
+                let res = await fetch("https://masai-api-mocker.herokuapp.com/auth/login", {
+                    method: "POST",
+                    body: details,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                let data = await res.json();
+
+                console.log(data);
+
+                if (data.error) {
+                    showLoginFailed();
+                } else {
+                    fetchUserData(form.login_username.value, data.token);
+                }
+
+            } catch (e) {
+                // console.log(e);
+            }
+
+        }
+
+        function closeOverlay() {
+            document.getElementById("overlay").style.display = "none";
+        }
+
+        function showSignUpFailed() {
+            // alert("failed");
+            document.getElementById("signup_failed").style.display = "block";
+            document.getElementById("signup_success").style.display = "none";
+        }
+
+        function showSignUpSuccessful() {
+            // alert("success");
+            document.getElementById("signup_failed").style.display = "none";
+            document.getElementById("signup_success").style.display = "block";
+            setTimeout(() => { closeOverlay() }, 500);
+        }
+
+        async function fetchUserData(username, token) {
+            let res = await fetch(`https://masai-api-mocker.herokuapp.com/user/${username}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            let data = await res.json();
+
+            // console.log(data);
+
+            showLoggedUser(data);
+        }
+
+        function showLoginFailed() {
+            document.getElementById("login_failed").style.display = "block";
+        }
+
+        function showLoggedUser(data) {
+            let nav_user = document.getElementById("nav_user");
+            nav_user.querySelector("#logged_username").innerText = data.username;
+            nav_user.style.display = "flex";
+
+            document.getElementById("login_option").style.display = "none";
+
+            closeOverlay();
+        }
 
 
     </script>
