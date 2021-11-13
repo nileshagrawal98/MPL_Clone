@@ -11,15 +11,20 @@ At the end of our 3rd unit, we were given a project as a part of our curriculum.
 ## About MPL
 MPL is a gaming platform where you can win amazing rewards and cash by playing your favorite games. Here you can have a great gaming experience and fun , you can find a variety of tournaments and 1v1 battles around the clock. In our clone, we have tried to cover all the important functionalities and pages one would find over there. We use a technology stack containing HTML, CSS, and JavaScript.
 
+## Tech stack
+- HTML
+- CSS
+- JS
+
 ## About my teammates and their contributions : —
 
 In our group their are total 6 people
 Avinash Chengot, Bhanu Solanki, Dheeraj, Nilesh Agrawal, Prashant Ahire, and me Sandeep Behera
 
-1. Sandeep & Bhanu are responsible for the landing page and the top nav bar || Toolkits:- HTML, CSS & JS
-2. Dheeraj was responsible for About, FAQ and Help page || Toolkits:- HTML, CSS & JS
-3. Prashant was responsible for the MPL Esports page. || Toolkits:- HTML, CSS & JS
-4. Nilesh was responsible for the Blog page & Login page . || Toolkits:- HTML, CSS & JS
+1. Sandeep & Bhanu are responsible for the landing page and the top nav bar.
+2. Dheeraj was responsible for About, FAQ and Help page.
+3. Prashant was responsible for the MPL Esports page.
+4. Nilesh was responsible for the Blog page & Login page.
 
 ## A glimpse of the project: —
 
